@@ -10,14 +10,7 @@ LMXI := libmx/inc
 INC  = ush.h
 INCS = $(addprefix $(INCD)/, $(INC))
 
-ifeq ($(shell uname), Linux)
-    # Для Linux
-    SRC = $(filter-out $(SRCD)/ls.c, $(wildcard $(SRCD)/*.c))
-else
-    # Для других операционных систем
-    SRC = $(wildcard $(SRCD)/*.c)
-endif
-
+SRC = $(wildcard $(SRCD)/*.c)
 OBJS = $(patsubst $(SRCD)/%.c, $(OBJD)/%.o, $(SRC))
 
 all: install

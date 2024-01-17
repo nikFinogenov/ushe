@@ -6,17 +6,17 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdbool.h>
-#include <malloc/malloc.h>
-// #if defined(__APPLE__)
-//     #include <malloc/malloc.h>
-//     #define malloc_size malloc_size
-// #elif defined(_WIN64) || defined(_WIN32)
-//     #include <malloc.h>
-//     #define malloc_size _msize
-// #elif defined(__linux__)
-//     #include <malloc.h>
-//     #define malloc_size malloc_usable_size
-// #endif
+// #include <malloc/malloc.h>
+#if defined(__APPLE__)
+    #include <malloc/malloc.h>
+    #define malloc_size malloc_size
+#elif defined(_WIN64) || defined(_WIN32)
+    #include <malloc.h>
+    #define malloc_size _msize
+#elif defined(__linux__)
+    #include <malloc.h>
+    #define malloc_size malloc_usable_size
+#endif
 
 typedef struct s_list {
     void *data;
