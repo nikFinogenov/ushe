@@ -1,5 +1,5 @@
 NAME = ush
-FLAG = -std=c11 -Wall -Wextra -Werror -Wpedantic
+FLAG = -std=c99 -Wall -Wextra -Werror -Wpedantic
 SRCD = src
 INCD = inc
 OBJD = obj
@@ -10,7 +10,13 @@ LMXI := libmx/inc
 INC  = ush.h
 INCS = $(addprefix $(INCD)/, $(INC))
 
-SRC = $(wildcard $(SRCD)/*.c)
+ifeq ($(shell uname), Linux)
+    # Для Linux
+    SRC = $(filter-out $(SRCD)/ls.c, $(wildcard $(SRCD)/*.c))
+else
+    # Для других операционных систем
+    SRC = $(wildcard $(SRCD)/*.c)
+endif
 
 OBJS = $(patsubst $(SRCD)/%.c, $(OBJD)/%.o, $(SRC))
 
