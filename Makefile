@@ -1,5 +1,5 @@
 NAME = ush
-FLAG = -std=c11 -Wall -Wextra -Werror -Wpedantic
+FLAG = -std=c99 -Wall -Wextra -Werror -Wpedantic
 SRCD = src
 INCD = inc
 OBJD = obj
@@ -11,7 +11,6 @@ INC  = ush.h
 INCS = $(addprefix $(INCD)/, $(INC))
 
 SRC = $(wildcard $(SRCD)/*.c)
-
 OBJS = $(patsubst $(SRCD)/%.c, $(OBJD)/%.o, $(SRC))
 
 all: install
