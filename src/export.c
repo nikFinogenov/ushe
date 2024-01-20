@@ -2,13 +2,23 @@
 
 static void export_var(void) {
     for (char **env = environ; *env != NULL; env++) {
-        char *name = *env;
-        char *value = strchr(name, '=');
-        if (value != NULL) {
-            *value = '\0';
-            value++;
+        char *equal_sign_pos = strchr(*env, '=');
+
+        if (equal_sign_pos != NULL) {
+            size_t variableLength = equal_sign_pos - *env;
+
+            char variable[variableLength + 1];
+            strncpy(variable, *env, variableLength);
+            variable[variableLength] = '\0';
+
+            char *value = equal_sign_pos + 1;
+
+            if (*value != '\0') {
+                printf("declare -x %s=\"%s\"\n", variable, value);
+            } else {
+                printf("declare -x %s\n", variable);
+            }
         }
-        printf("declare -x %s=\"%s\"\n", name, value);
     }
 }
 

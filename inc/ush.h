@@ -36,9 +36,7 @@ void cd(char* path);
 char* command_format(char* command);
 void echo(char* line);
 void my_exit(void);
-int export(char* argumenst);
-size_t environ_size(void);
-void environ_restore(char **env_copy);
-
+int export(char* arguments);
+int unset(char* arguments);
 
 #endif
