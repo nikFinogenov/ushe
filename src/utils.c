@@ -17,15 +17,32 @@ char* replace_tilda(char* argument, int *flag) {
         if (argument[tildeIndex + 1] == '+'){
             *flag = 1;
             return mx_replace_sub_string(argument, "~+", PWD);
-        }
-            
+        }  
         else if (argument[tildeIndex + 1] == '-') {
             *flag = 2;
             return mx_replace_sub_string(argument, "~-", PREVPWD);
         }
-        else {
+        else if(argument[tildeIndex + 1] == '/'){
             *flag = 0;
             return mx_replace_sub_string(argument, "~", HOME);
+        }
+        else{
+
+        const char* usernameEnd = strchr(argument, '/');
+    
+        size_t usernameLength = (usernameEnd != NULL) ? (size_t)(usernameEnd - argument) : strlen(argument);
+
+        char* username = (char*)malloc(usernameLength + 1);
+
+        strncpy(username, argument + tildeIndex + 1, usernameLength);
+        username[usernameLength] = '\0';
+
+            struct passwd *user_info = getpwnam(username);
+            if (user_info != NULL) {
+                char* path = mx_strjoin("~", username);
+                return mx_replace_sub_string(argument, path, user_info->pw_dir);
+            }
+            return argument;
         }
     }
     return argument;

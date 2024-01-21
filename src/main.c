@@ -31,7 +31,7 @@ int main(void) {
             else if (strcmp(command, "echo") == 0) echo(commands[i]);
             else if (strcmp(command, "exit") == 0) my_exit();
             else {
-                if(flag) command = replace_tilda_backwards(command, flag);
+                if(flag != -1) command = replace_tilda_backwards(command, flag);
                 printf("u$h: %s: command not found\n", command);
             }
         }
