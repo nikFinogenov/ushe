@@ -22,15 +22,15 @@ char* replace_tilda(char* argument, int *flag) {
             *flag = 2;
             return mx_replace_sub_string(argument, "~-", PREVPWD);
         }
-        else if(argument[tildeIndex + 1] == '/'){
+        else if(argument[tildeIndex + 1] == '/' || argument[tildeIndex + 1] == '\0'|| argument[tildeIndex + 1] == ' '){
             *flag = 0;
             return mx_replace_sub_string(argument, "~", HOME);
         }
         else{
 
         const char* usernameEnd = strchr(argument, '/');
-    
-        size_t usernameLength = (usernameEnd != NULL) ? (size_t)(usernameEnd - argument) : strlen(argument);
+
+        size_t usernameLength = (usernameEnd != NULL) ? (size_t)(usernameEnd - argument - tildeIndex - 1) : strlen(argument);
 
         char* username = (char*)malloc(usernameLength + 1);
 
@@ -42,6 +42,7 @@ char* replace_tilda(char* argument, int *flag) {
                 char* path = mx_strjoin("~", username);
                 return mx_replace_sub_string(argument, path, user_info->pw_dir);
             }
+            
             return argument;
         }
     }
