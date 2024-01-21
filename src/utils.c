@@ -1,8 +1,18 @@
 #include "ush.h"
 
+extern char* HOME;
+
 void init(void) {
-    // struct passwd *pw = getpwuid(getuid());
-    // HOME = pw->pw_dir;
+    // struct passwd *pw = ;
+    HOME = getpwuid(getuid())->pw_dir;
+}
+
+char* replace_tilda(char* argument) {
+    return mx_replace_substr(argument, "~", HOME);
+}
+
+char* replace_tilda_backwards(char* argument) {
+    return mx_replace_substr(argument, HOME, "~");
 }
 
 char* command_format(char* command) {
