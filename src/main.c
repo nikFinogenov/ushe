@@ -1,5 +1,6 @@
 #include "ush.h"
 
+
 int main(void) {
     init();
     while(1) {
@@ -15,22 +16,23 @@ int main(void) {
         char** commands = mx_strsplit(line, ';');
         mx_strdel(&line);
         for (int i = 0; commands[i] != NULL; ++i) {
-            mx_strcpy(commands[i], replace_tilda(mx_strtrim(command_format(commands[i]))));
+            mx_strcpy(commands[i], mx_strtrim(command_format(commands[i])));
+            int flag = -1;
+            char* repl = replace_tilda(commands[i], &flag);
+            size_t secondStringLength = strlen(repl);
+            char* destinationBuffer = (char*)malloc(secondStringLength + 1);
+            mx_strcpy(destinationBuffer, repl);
+            commands[i] = destinationBuffer;
+
             char* command = mx_strsplit(commands[i], ' ')[0];
-            // if(strcmp(command, "~") == 0) {
-            //     printf("u$h: %s: is a directory\n", HOME); 
-            //     continue;
-            // };
-            // command = replace_tilda(command);
             
             if (strcmp(command, "pwd") == 0) pwd();
             else if (strcmp(command, "cd") == 0) cd(mx_strsplit(commands[i], ' ')[1]);
             else if (strcmp(command, "echo") == 0) echo(commands[i]);
             else if (strcmp(command, "exit") == 0) my_exit();
-            // else if(strcmp(command, "~")) printf("u$h: %s: is a directory\n", HOME);
             else {
-                command = replace_tilda_backwards(command);
-                printf("u$h: command not found: %s\n", command);
+                if(flag) command = replace_tilda_backwards(command, flag);
+                printf("u$h: %s: command not found\n", command);
             }
         }
     }

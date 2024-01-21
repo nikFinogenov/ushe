@@ -32,9 +32,13 @@ char* command_format(char* command);
 void echo(char* line);
 void my_exit(void);
 void ls(int argc, char **argv);
-char* replace_tilda(char*);
-char* replace_tilda_backwards(char* argument);
+char* replace_tilda(char* argument, int *flag);
+char* replace_tilda_backwards(char* argument, int flag);
+
+char* replaceSubstring(char* original, const char* substring, const char* replacement);
 
 char* HOME;
+char* PWD;
+char* PREVPWD;
 
 #endif
