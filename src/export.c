@@ -2,25 +2,26 @@
 
 static void export_var(void) {
     for (char **env = environ; *env != NULL; env++) {
-        char *equal_sign_pos = strchr(*env, '=');
+        // char *equal_sign_pos = strchr(*env, '=');
 
-        if (equal_sign_pos != NULL) {
-            size_t variableLength = equal_sign_pos - *env;
+        // if (equal_sign_pos != NULL) {
+        //     size_t variableLength = equal_sign_pos - *env;
 
-            char variable[variableLength + 1];
-            strncpy(variable, *env, variableLength);
-            variable[variableLength] = '\0';
+        //     char variable[variableLength + 1];
+        //     strncpy(variable, *env, variableLength);
+        //     variable[variableLength] = '\0';
 
-            char *value = equal_sign_pos + 1;
+        //     char *value = equal_sign_pos + 1;
 
-            if (*value != '\0') {
-                printf("declare -x %s=\"%s\"\n", variable, value);
-            } else {
-                printf("declare -x %s\n", variable);
-            }
-        }
+        //     if (*value != '\0') {
+        //         printf("declare -x %s=\"%s\"\n", variable, value);
+        //     } else {
+        //         printf("declare -x %s\n", variable);
+        //     }
+        // } ebal ya rot etoi ucode kontori
+        printf("%s\n", *env);
     }
-}
+}   
 
 int export(char* arguments) {
 
