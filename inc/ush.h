@@ -1,6 +1,11 @@
 #ifndef USH_H
 #define USH_H
 
+#define _GNU_SOURCE
+#define __DEFAULT_SOURCE
+#define _POSIX_C_SOURCE 200809L //for setenv() and unsetenv()
+#define _XOPEN_SOURCE 500 // for realpath() on Linux
+
 #include <unistd.h>
 #include <stdio.h>
 #include "../libmx/inc/libmx.h"
@@ -24,15 +29,14 @@
 #define YELLOW_COLOR "\033[33m"
 #define RED_COLOR "\033[31m"
 
-
+extern char **environ;
 void pwd(void);
 void init(void);
 void cd(char* path);
 char* command_format(char* command);
 void echo(char* line);
 void my_exit(void);
-void ls(int argc, char **argv);
+int export(char* arguments);
+int unset(char* arguments);
 
-
-// extern char* HOME;
 #endif
