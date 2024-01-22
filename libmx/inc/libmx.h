@@ -23,7 +23,7 @@ typedef struct s_list {
     struct s_list *next;
 } t_list;
 
-
+char* mx_replace_sub_string(char* original, const char* substring, const char* replacement);
 int mx_get_length(char **arr);
 char* mx_ultoa(unsigned long value);
 char *mx_double_to_str(double number);
