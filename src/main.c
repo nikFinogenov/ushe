@@ -24,8 +24,9 @@ int main(void) {
             mx_strcpy(destinationBuffer, repl);
             commands[i] = destinationBuffer;
 
+
             char* command = mx_strsplit(commands[i], ' ')[0];
-            if (strcmp(command, "pwd") == 0) pwd();
+            if (strcmp(command, "pwd") == 0) pwd(commands[i]);
             else if (strcmp(command, "export") == 0) export(commands[i]);
             else if (strcmp(command, "unset") == 0) unset(commands[i]);
             else if (strcmp(command, "which") == 0) which(commands[i]);           
