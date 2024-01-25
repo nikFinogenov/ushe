@@ -36,6 +36,7 @@ run_test "pwd";
 # run_test "ls -la src";
 run_test "pwd; cd ..; pwd"
 run_test "pwd; cd ..;cd ushe;"
+run_test "export"
 
 rm temp_file1 temp_file2
 echo -e "Tests completed. ${GREEN}${SUCCESS_COUNT} successful tests.${NC} ${RED}${FAILED_COUNT} failed tests.${NC}"
