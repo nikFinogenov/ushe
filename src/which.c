@@ -1,32 +1,7 @@
 #include "ush.h"
-
-static char **split_string(char *str, char delimiter) {
-    int bufsize = 64, position = 0;
-    char **tokens = malloc(bufsize * sizeof(char*));
-    char *token;
-
-    while ((token = strchr(str, delimiter)) != NULL) {
-        *token = '\0';
-        tokens[position] = str;
-        position++;
-
-        if (position >= bufsize) {
-            bufsize += 64;
-            tokens = realloc(tokens, bufsize * sizeof(char*));
-        }
-
-        str = token + 1;
-    }
-
-    tokens[position] = str;
-    position++;
-
-    tokens[position] = NULL;
-    return tokens;
-}
-
+ 
 static char *find_in_path(char *cmd, char **path) {
-    char **dirs = split_string(*path, ':');
+    char **dirs = mx_strsplit(*path, ':');
     char *path_cmd = NULL;
 
     for (int i = 0; dirs[i] != NULL; i++) {
