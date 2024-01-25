@@ -38,15 +38,15 @@ void echo(char* line);
 void my_exit(void);
 int export(char* arguments);
 int unset(char* arguments);
+int which(char* arguments);
 
-void ls(int argc, char **argv);
 char* replace_tilda(char* argument, int *flag);
 char* replace_tilda_backwards(char* argument, int flag);
 
-char* replaceSubstring(char* original, const char* substring, const char* replacement);
 
 char* HOME;
 char* PWD;
 char* PREVPWD;
+char* PATH;
 
 #endif
