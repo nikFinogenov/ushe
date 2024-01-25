@@ -11,6 +11,7 @@
 #include "../libmx/inc/libmx.h"
 #include <string.h>
 #include <pwd.h>
+#include <ncurses.h>
 
 // #include <dirent.h>
 // #include <time.h>
@@ -34,7 +35,7 @@ void pwd(void);
 void init(void);
 void cd(char* path);
 char* command_format(char* command);
-void echo(char* line);
+void echo_cmd(char* line);
 void my_exit(void);
 int export(char* arguments);
 int unset(char* arguments);

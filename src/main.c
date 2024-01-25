@@ -1,9 +1,13 @@
 #include "ush.h"
-
+#include "ncurses.h"
 
 int main(void) {
     init();
-    while(1) {
+
+    initscr(); // Initialize ncurses
+    keypad(stdscr, TRUE); // Enable special keys
+    
+    while(true) {
         if(isatty(0)) mx_printstr("u$h> ");
         char* line = NULL;
         size_t length = 0;
@@ -29,7 +33,7 @@ int main(void) {
             else if (strcmp(command, "export") == 0) export(commands[i]);
             else if (strcmp(command, "unset") == 0) unset(commands[i]);
             else if (strcmp(command, "cd") == 0) cd(mx_strsplit(commands[i], ' ')[1]);
-            else if (strcmp(command, "echo") == 0) echo(commands[i]);
+            else if (strcmp(command, "echo") == 0) echo_cmd(commands[i]);
             else if (strcmp(command, "exit") == 0) my_exit();
             else {
                 if(flag != -1) command = replace_tilda_backwards(command, flag);
