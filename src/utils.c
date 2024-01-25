@@ -8,6 +8,7 @@ void init(void) {
     HOME = getpwuid(getuid())->pw_dir;
     PWD = getcwd(NULL, 1024);
     PREVPWD = getcwd(NULL, 1024);
+    PATH = getenv("PATH");
 }
 
 char* replace_tilda(char* argument, int *flag) {
