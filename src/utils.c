@@ -79,3 +79,4 @@ char* command_format(char* command) {
     }
     return temp;
 }
+
