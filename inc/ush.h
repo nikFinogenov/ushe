@@ -36,9 +36,9 @@ typedef struct t_env_flags_s{
 } t_env_flags_s; 
 
 typedef struct t_cd_flags_s{
-    bool s; //DONE Flag for option '1': List one entry per line.
-    bool P; //DONE Flag for option '1': List one entry per line.
-    bool hyphen; //DONE Flag for option '1': List one entry per line.
+    bool s; //xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|
+    bool P; //use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'
+    bool hyphen; //return to OLDPWD
 } t_cd_flags_s; 
 
 typedef struct t_pwd_flags_s{
@@ -52,8 +52,8 @@ typedef struct t_which_flags_s{
 } t_which_flags_s;
 
 typedef struct t_echo_flags_s{
-    bool E; //xyi ego znaet
-    bool e; //xyi ego znaet
+    bool E; //disable interpretation of backslash escapes (default)
+    bool e; //enable interpretation of backslash escapes
     bool n; //Do not print the trailing newline character.
 } t_echo_flags_s;
 
