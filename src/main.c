@@ -28,8 +28,9 @@ int main(void) {
             if (strcmp(command, "pwd") == 0) pwd(commands[i]);
             else if (strcmp(command, "export") == 0) export(commands[i]);
             else if (strcmp(command, "unset") == 0) unset(commands[i]);
-            else if (strcmp(command, "which") == 0) which(commands[i]);           
-            else if (strcmp(command, "cd") == 0) cd(mx_strsplit(commands[i], ' ')[1]);
+            else if (strcmp(command, "which") == 0) which(commands[i]); 
+            else if(strcmp(command, "env") == 0) env(commands[i]);          
+            else if (strcmp(command, "cd") == 0) cd(commands[i]);
             else if (strcmp(command, "echo") == 0) echo(commands[i]);
             else if (strcmp(command, "exit") == 0) my_exit();
             else {

@@ -81,36 +81,40 @@ char* command_format(char* command) {
     return temp;
 }
 
-char* parse_flags(char* command) {
+char* parse_flags(char* command, char** result) {
     char **temp = mx_strsplit(command, ' ');
     int arg_length = mx_get_length(temp) - 1;
     char *flags = NULL;
+    *result = mx_strdup(temp[0]);
     for(int i = 1; i <= arg_length; i++) {
-        if(temp[i][0] == '-') flags = mx_strjoin(flags, temp[i]+1);
+        if((mx_strcmp(temp[0], "cd") == 0 && mx_strcmp(temp[i], "-") == 0) || temp[i][0] != '-') {
+            *result = mx_strjoin(*result, " ");
+            *result = mx_strjoin(*result, temp[i]);
+        }
+        else flags = mx_strjoin(flags, temp[i]+1);
     }
     return flags;
 }
 
-void init_cd_flags(t_cd_flags_s *flags){
-    // flags->hyphen = false; //хз флаг ли это, надо проверить
-    flags->P = false;
-    flags->s = false;
+void init_cd_flags(t_cd_flags_s *flags, char* str_flags){
+    flags->P = mx_str_contains(str_flags, 'P') ? true : false;
+    flags->s = mx_str_contains(str_flags, 's') ? true : false;
 }
-void init_env_flags(t_env_flags_s *flags){
-    flags->i = false;
-    flags->P = false;
-    flags->u = false;
+void init_env_flags(t_env_flags_s *flags, char* str_flags){
+    flags->i = mx_str_contains(str_flags, 'i') ? true : false;
+    flags->P = mx_str_contains(str_flags, 'P') ? true : false;
+    flags->u = mx_str_contains(str_flags, 'u') ? true : false;
 }
 void init_pwd_flags(t_pwd_flags_s *flags, char* str_flags){
     flags->L = mx_str_contains(str_flags, 'L') ? true : false;
     flags->P = mx_str_contains(str_flags, 'P') ? true : false;
 }
-void init_which_flags(t_which_flags_s *flags){
-    flags->a = false;
-    flags->s = false;
+void init_which_flags(t_which_flags_s *flags, char* str_flags){
+    flags->a = mx_str_contains(str_flags, 'a') ? true : false;
+    flags->s = mx_str_contains(str_flags, 's') ? true : false;
 }
-void init_echo_flags(t_echo_flags_s *flags){
-    flags->E = false;
-    flags->e = false;
-    flags->n = false;
+void init_echo_flags(t_echo_flags_s *flags, char* str_flags){
+    flags->E = mx_str_contains(str_flags, 'E') ? true : false;
+    flags->e = mx_str_contains(str_flags, 'e') ? true : false;
+    flags->n = mx_str_contains(str_flags, 'n') ? true : false;
 }

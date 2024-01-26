@@ -21,6 +21,12 @@ static char *find_in_path(char *cmd, char **path) {
 }
 
 int which(char* arguments) {
+    char* res = NULL;
+    char* str_flags = parse_flags(arguments, &res);
+    t_which_flags_s flags;
+    init_which_flags(&flags, str_flags);
+    mx_strcpy(arguments, res);
+
     const char* which_command = "which";
 
     if (strncmp(arguments, which_command, strlen(which_command)) == 0) {
