@@ -105,9 +105,29 @@ void init_env_flags(t_env_flags_s *flags, char* str_flags){
     flags->P = mx_str_contains(str_flags, 'P') ? true : false;
     flags->u = mx_str_contains(str_flags, 'u') ? true : false;
 }
-void init_pwd_flags(t_pwd_flags_s *flags, char* str_flags){
-    flags->L = mx_str_contains(str_flags, 'L') ? true : false;
-    flags->P = mx_str_contains(str_flags, 'P') ? true : false;
+int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags) {
+    for(int i = 0; i < mx_strlen(str_flags); i++){
+        switch (str_flags[i])
+        {
+        case 'P':
+            flags->P = true;
+            flags->L = false;
+            break;
+        case 'L':
+            flags->L = true;
+            flags->P = false;
+            break;
+        default:
+            mx_printerr("ush: pwd: -");
+            mx_printerr(&str_flags[i]);
+            mx_printerr(": invalid option\npwd: usage: pwd [-LP]\n");
+            return 1;
+            // break;
+        }
+    }
+    return 0;
+    // flags->L = mx_str_contains(str_flags, 'L') ? true : false;
+    // flags->P = mx_str_contains(str_flags, 'P') ? true : false;
 }
 void init_which_flags(t_which_flags_s *flags, char* str_flags){
     flags->a = mx_str_contains(str_flags, 'a') ? true : false;
