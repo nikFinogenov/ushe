@@ -7,6 +7,9 @@ void cd(char* command) {
             path = malloc(strlen(HOME) + 1); 
             mx_strcpy(path, HOME);
         }
+        if(mx_strcmp(path, "-") == 0) {
+            path = PREVPWD;
+        }
         if (chdir(path) == 0) {
             PREVPWD = PWD;
             setenv("OLDPWD", PREVPWD, 1);

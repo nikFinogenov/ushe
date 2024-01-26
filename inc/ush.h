@@ -38,7 +38,7 @@ typedef struct t_env_flags_s{
 typedef struct t_cd_flags_s{
     bool s; //xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|
     bool P; //use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'
-    bool hyphen; //return to OLDPWD
+    // bool hyphen; //return to OLDPWD
 } t_cd_flags_s; 
 
 typedef struct t_pwd_flags_s{

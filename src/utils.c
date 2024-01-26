@@ -92,7 +92,7 @@ char* parse_flags(char* command) {
 }
 
 void init_cd_flags(t_cd_flags_s *flags){
-    flags->hyphen = false; //хз флаг ли это, надо проверить
+    // flags->hyphen = false; //хз флаг ли это, надо проверить
     flags->P = false;
     flags->s = false;
 }
