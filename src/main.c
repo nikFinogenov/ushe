@@ -26,6 +26,7 @@ int main(void) {
 
             char* command = mx_strsplit(commands[i], ' ')[0];
             if (strcmp(command, "pwd") == 0) pwd();
+            else if (check_buildin(command)) system(commands[i]);
             else if (strcmp(command, "export") == 0) export(commands[i]);
             else if (strcmp(command, "unset") == 0) unset(commands[i]);
             else if (strcmp(command, "which") == 0) which(commands[i]);           

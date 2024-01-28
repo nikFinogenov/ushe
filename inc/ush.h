@@ -73,6 +73,8 @@ int which(char* arguments);
 char* replace_tilda(char* argument, int *flag);
 char* replace_tilda_backwards(char* argument, int flag);
 
+bool check_buildin(char* command);
+
 char* HOME;
 char* PWD;
 char* PREVPWD;

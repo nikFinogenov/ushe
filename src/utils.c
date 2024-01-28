@@ -4,6 +4,10 @@ extern char* HOME;
 extern char* PWD;
 extern char* PREVPWD;
 
+char *buildin_list[19] = {"env", "export", "unset", "echo", "jobs", "fg", "bg",
+                        "cd", "pwd", "which", "exit", "set", "kill", "chdir",
+                        "true", "alias", "declare", "false", NULL};
+
 void init(void) {
     HOME = getpwuid(getuid())->pw_dir;
     PWD = getcwd(NULL, 1024);
@@ -81,3 +85,11 @@ char* command_format(char* command) {
     return temp;
 }
 
+bool check_buildin(char* command) {
+    for (int i = 0; buildin_list[i] != NULL; ++i) {
+        if (strcmp(buildin_list[i], command) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
