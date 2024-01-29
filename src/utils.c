@@ -4,6 +4,10 @@ extern char* HOME;
 extern char* PWD;
 extern char* PREVPWD;
 
+char *buildin_list[19] = {"env", "export", "unset", "echo", "jobs", "fg", "bg",
+                        "cd", "pwd", "which", "exit", "set", "kill", "chdir",
+                        "true", "alias", "declare", "false", NULL};
+
 void init(void) {
     HOME = getpwuid(getuid())->pw_dir;
     PWD = getcwd(NULL, 1024);
@@ -136,4 +140,13 @@ void init_echo_flags(t_echo_flags_s *flags, char* str_flags){
     flags->E = mx_str_contains(str_flags, 'E') ? true : false;
     flags->e = mx_str_contains(str_flags, 'e') ? true : false;
     flags->n = mx_str_contains(str_flags, 'n') ? true : false;
+}
+
+bool check_buildin(char* command) {
+    for (int i = 0; buildin_list[i] != NULL; ++i) {
+        if (strcmp(buildin_list[i], command) == 0) {
+            return false;
+        }
+    }
+    return true;
 }

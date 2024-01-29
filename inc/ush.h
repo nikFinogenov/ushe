@@ -79,6 +79,7 @@ void init_env_flags(t_env_flags_s *flags, char* str_flags);
 void init_which_flags(t_which_flags_s *flags, char* str_flags);
 void init_echo_flags(t_echo_flags_s *flags, char* str_flags);
 int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags);
+bool check_buildin(char* command);
 
 char* HOME;
 char* PWD;
