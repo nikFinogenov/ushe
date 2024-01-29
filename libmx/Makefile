@@ -1,19 +1,14 @@
-NAME	=	libmx.a
+NAME = libmx.a
+FLAG = -std=c11 -Wall -Wextra -Werror -Wpedantic
+SRCD = src
+INCD = inc
+OBJD = obj
 
-CFLG	=	-std=c11 -Wall -Wextra -Werror -Wpedantic
-COMP 	= 	clang
+INC	 = libmx.h
+INCS = $(addprefix $(INCD)/, $(INC))
 
-SRCD	=	src
-INCD	=	inc
-OBJD	=	obj
-
-INC		=	libmx.h
-INCS	=	$(addprefix $(INCD)/, $(INC))
-
-SRC = $(wildcard $(SRCD)/*.c)
-
-SRCS	=	$(addprefix $(SRCD)/, $(SRC))
-OBJS = $(addprefix $(OBJD)/, $(notdir $(SRC:%.c=%.o)))
+SRC  = $(wildcard $(SRCD)/*.c)
+OBJS = $(patsubst $(SRCD)/%.c, $(OBJD)/%.o, $(SRC))
 
 CLEAR = \r\33[2K
 GREENB = \033[32;1m
@@ -30,7 +25,7 @@ $(NAME): $(OBJS)
 	@printf "${CLEAR}$@\t   ${GREENB}created${NORMAL}\n"
 
 $(OBJD)/%.o: $(SRCD)/%.c $(INCS) | $(OBJD)
-	@$(COMP) $(CFLG) -c $< -o $@ -I$(INCD)
+	@clang $(FLAG) -c $< -o $@ -I$(INCD)
 	@printf "${CLEAR}$(NAME)\t   ${YELLOWB}compile ${NORMAL}$(<:$(SRCD)/%.c=%) "
 
 $(OBJS): | $(OBJD)
@@ -40,7 +35,6 @@ $(OBJD):
 	
 clean:
 	@rm -rf $(OBJD)
-	@printf "$(OBJD)\t   ${REDB}deleted${NORMAL}\n"
 
 uninstall: clean
 	@rm -rf $(NAME)
@@ -49,8 +43,8 @@ uninstall: clean
 reinstall: uninstall install
 
 start: 
-	$(COMP) $(CFLG) main.c libmx.a && ./a.out
+	clang $(FLAG) main.c libmx.a && ./a.out
 
 start_i: install
-	$(COMP) $(CFLG) main.c libmx.a && ./a.out
+	clang $(FLAG) main.c libmx.a && ./a.out
 	

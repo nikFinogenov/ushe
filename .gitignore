@@ -15,3 +15,5 @@ ln*
 tests.sh
 ush.txt
 ush
+test.c
+link

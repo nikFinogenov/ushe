@@ -1,11 +1,19 @@
 #include "ush.h"
 
 void cd(char* command) {
+    char* res = NULL;
+    char* str_flags = parse_flags(command, &res);
+    t_cd_flags_s flags;
+    init_cd_flags(&flags, str_flags);
+    mx_strcpy(command, res);
+
     char* path = mx_strsplit(command, ' ')[1];
     if(mx_get_length(mx_strsplit(command, ' ')) <= 2){
         if (path == NULL) {
-            path = malloc(strlen(HOME) + 1); 
-            mx_strcpy(path, HOME);
+            path = HOME;
+        }
+        if(mx_strcmp(path, "-") == 0) {
+            path = PREVPWD;
         }
         if (chdir(path) == 0) {
             PREVPWD = PWD;
