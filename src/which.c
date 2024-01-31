@@ -37,16 +37,18 @@ int which(char* arguments) {
             if (command[0] != '-') {
                 char* path = strdup(PATH);
                 char* found_cmd = find_in_path(command, &path);
-
                 if (found_cmd != NULL) {
                     printf("%s\n", found_cmd);
                     free(found_cmd);
+                } else if (!check_buildin(command)) {
+                    printf("%s: buildin command\n", command);
                 } else {
                     printf("%s: command not found\n", command);
                 }
-                free(path);
+
+                free(path);      
+                command = strtok(NULL, " ");
             }
-            command = strtok(NULL, " ");
         }
     }
     return 0;
