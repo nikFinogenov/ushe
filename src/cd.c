@@ -1,46 +1,36 @@
 #include "ush.h"
 #include <sys/stat.h>
 #include <limits.h>
-bool is_link(const char *filename) {
-    struct stat st;
-    printf("%s\n", filename);
-    if (lstat(filename, &st) == 0) {
-        return S_ISLNK(st.st_mode);
-    }
-    return false;
-}
-char* get_absolute_path(const char* pwd, const char* filename) {
-    size_t len_pwd = strlen(pwd);
-    size_t len_filename = strlen(filename);
 
-    // Allocate memory for the combined path
-    char* absolute_path;
+// static char* get_absolute_path(const char* filename) {
+//     size_t len_pwd = strlen(PWD);
+//     size_t len_filename = strlen(filename);
 
-    // Check if the filename is already an absolute path
-    if (filename[0] == '/' || filename[0] == '~') {
-        absolute_path = strdup(filename);
-    } else {
-        absolute_path = (char*)malloc(len_pwd + len_filename + 2);  // +2 for '/' and null terminator
+//     char* absolute_path;
 
-        if (absolute_path == NULL) {
-            perror("Memory allocation error");
-            exit(EXIT_FAILURE);
-        }
+//     if (filename[0] == '/' || filename[0] == '~') {
+//         absolute_path = strdup(filename);
+//     } else {
+//         absolute_path = (char*)malloc(len_pwd + len_filename + 2); 
 
-        // Combine the current working directory and the filename
-        strcpy(absolute_path, pwd);
+//         if (absolute_path == NULL) {
+//             perror("Memory allocation error");
+//             exit(EXIT_FAILURE);
+//         }
 
-        // Make sure there is a '/' between pwd and filename
-        if (pwd[len_pwd - 1] != '/') {
-            strcat(absolute_path, "/");
-        }
+//         strcpy(absolute_path, PWD);
 
-        strcat(absolute_path, filename);
-    }
+//         if (PWD[len_pwd - 1] != '/') {
+//             strcat(absolute_path, "/");
+//         }
 
-    return absolute_path;
-}
-void remove_last_component(char* path) {
+//         strcat(absolute_path, filename);
+//     }
+
+//     return absolute_path;
+// }
+
+static void remove_last_component(char* path) {
     if (path != NULL) {
         size_t len = strlen(path);
 
@@ -66,6 +56,41 @@ void remove_last_component(char* path) {
         }
     }
 }
+
+static bool check_for_link(char* path) {
+    struct stat path_stat;
+    char **tmp = mx_strsplit(path, '/');
+    char *temp = NULL;
+
+    for (int i = 0; i < mx_get_length(tmp); i++) {
+        temp = mx_strjoin(temp, mx_strjoin("/", tmp[i]));
+
+        if (lstat(temp, &path_stat) == 0) {
+            if (S_ISLNK(path_stat.st_mode)) {
+                mx_strdel(&temp); // Cleanup allocated memory
+                return true;
+            }
+        } else {
+            mx_strdel(&temp); // Cleanup allocated memory
+            return false;
+        }
+    }
+
+    mx_strdel(&temp); // Cleanup allocated memory
+    return false;
+}
+static char* manual_cwd(char* path) {
+    if(mx_strcmp(path, "..") != 0)
+        return mx_strjoin(PWD, mx_strjoin("/", path));
+    return PWD;
+}
+static char* join_pwd(char* path) {
+    if(path[0] == '/'){
+        return path;
+    }
+    return mx_strjoin(PWD, mx_strjoin("/", path));
+}
+
 void cd(char* command) {
     char* res = NULL;
     char* str_flags = parse_flags(command, &res);
@@ -76,6 +101,7 @@ void cd(char* command) {
     char* path = mx_strsplit(command, ' ')[1];
     if(path[mx_strlen(path) - 1] == '/') path[mx_strlen(path) - 1] = '\0';
     if(mx_get_length(mx_strsplit(command, ' ')) <= 2){
+        bool is_link = check_for_link(PWD);
         if (path == NULL) {
             path = HOME;
         }
@@ -83,31 +109,34 @@ void cd(char* command) {
             path = PREVPWD;
         }
         if(mx_strcmp(path, "..") == 0) {
-        //     path = PREVPWD;
             remove_last_component(PWD);
+            is_link = check_for_link(PWD);
+            if(!is_link) path = PWD;
         }
         struct stat path_stat;
+
         if (lstat(path, &path_stat) == 0) {
-            // if (S_ISLNK(path_stat.st_mode)) {
-            //     PREVPWD = PWD;
-            //     setenv("OLDPWD", PREVPWD, 1);
-            //     PWD = get_absolute_path(PWD, path);
-            //     setenv("PWD", PWD, 1);
-            // }
-            // else {
-                if (chdir(path) == 0) {
-                    PREVPWD = PWD;
-                    setenv("OLDPWD", PREVPWD, 1);
-                    // printf("%s\n", path);
-                    // PWD = is_link(path) ? get_absolute_path(PWD, path) : getcwd(NULL, 1024);
-                    PWD = S_ISLNK(path_stat.st_mode) ? get_absolute_path(PWD, path) : getcwd(NULL, 1024);
-                    setenv("PWD", PWD, 1);
-                } else {
-                    perror("chdir");
-                    return;
+            if (chdir(path) == 0) {
+                PREVPWD = PWD;
+                setenv("OLDPWD", PREVPWD, 1);
+                if(S_ISLNK(path_stat.st_mode)) {
+                    PWD = join_pwd(path);
                 }
+                else if (is_link) {
+                    PWD = manual_cwd(path);
+                }
+                else PWD = getcwd(NULL, 1024);
+                setenv("PWD", PWD, 1);
+            } else {
+                perror("chdir");
+                return;
             }
-        // }
+        }
+        else {
+            mx_printerr("ush: cd: ");
+            mx_printerr(path);
+            mx_printerr(": No such file or directory\n");
+        }
     }
     else{
         mx_printerr("ush: cd: string not in pwd: ");
