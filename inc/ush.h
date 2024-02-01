@@ -37,12 +37,13 @@ typedef struct t_env_flags_s{
 
 typedef struct t_cd_flags_s{
     bool s; //xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|
-    bool P; //use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'
+    bool P; //DONE use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'
+    bool L; //DONE taze ebateka chto s pwd
 } t_cd_flags_s; 
 
 typedef struct t_pwd_flags_s{
-    bool L; //Display the logical current working directory.
-    bool P; //Display the physical current working directory (all symbolic links resolved).
+    bool L; //DONE Display the logical current working directory.
+    bool P; //DONE Display the physical current working directory (all symbolic links resolved).
 } t_pwd_flags_s;
 
 typedef struct t_which_flags_s{
@@ -74,7 +75,7 @@ char* replace_tilda(char* argument, int *flag);
 char* replace_tilda_backwards(char* argument, int flag);
 
 char* parse_flags(char* command, char** result);
-void init_cd_flags(t_cd_flags_s *flags, char* str_flags);
+int init_cd_flags(t_cd_flags_s *flags, char* str_flags);
 void init_env_flags(t_env_flags_s *flags, char* str_flags);
 void init_which_flags(t_which_flags_s *flags, char* str_flags);
 void init_echo_flags(t_echo_flags_s *flags, char* str_flags);
