@@ -111,24 +111,28 @@ void init_env_flags(t_env_flags_s *flags, char* str_flags){
 }
 int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags) {
     if(str_flags != NULL) {
-            for(int i = 0; i < mx_strlen(str_flags); i++){
-                switch (str_flags[i])
-                {
-                case 'P':
-                    flags->P = true;
-                    flags->L = false;
-                    break;
-                case 'L':
-                    flags->L = true;
-                    flags->P = false;
-                    break;
-                default:
-                    mx_printerr("ush: pwd: -");
-                    mx_printerr(&str_flags[i]);
-                    mx_printerr(": invalid option\npwd: usage: pwd [-LP]\n");
-                    return 1;
-                }
+        for(int i = 0; i < mx_strlen(str_flags); i++){
+            switch (str_flags[i])
+            {
+            case 'P':
+                flags->P = true;
+                flags->L = false;
+                break;
+            case 'L':
+                flags->L = true;
+                flags->P = false;
+                break;
+            default:
+                mx_printerr("ush: pwd: -");
+                mx_printerr(&str_flags[i]);
+                mx_printerr(": invalid option\npwd: usage: pwd [-LP]\n");
+                return 1;
             }
+        }
+    }
+    else {
+        flags->L=false;
+        flags->P=false;
     }
     return 0;
 }
