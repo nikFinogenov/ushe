@@ -101,6 +101,9 @@ char* parse_flags(char* command, char** result) {
 }
 
 int init_cd_flags(t_cd_flags_s *flags, char* str_flags){
+    flags->L=false;
+    flags->P=false;
+    flags->s=false;
     if(str_flags != NULL) {
         for(int i = 0; i < mx_strlen(str_flags); i++){
             switch (str_flags[i])
@@ -123,11 +126,6 @@ int init_cd_flags(t_cd_flags_s *flags, char* str_flags){
             }
         }
     }
-    else {
-        flags->L=false;
-        flags->P=false;
-        flags->s=false;
-    }
     return 0;
 }
 void init_env_flags(t_env_flags_s *flags, char* str_flags){
@@ -136,6 +134,8 @@ void init_env_flags(t_env_flags_s *flags, char* str_flags){
     flags->u = mx_str_contains(str_flags, 'u') ? true : false;
 }
 int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags) {
+    flags->L=false;
+    flags->P=false;
     if(str_flags != NULL) {
         for(int i = 0; i < mx_strlen(str_flags); i++){
             switch (str_flags[i])
@@ -155,10 +155,6 @@ int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags) {
                 return 1;
             }
         }
-    }
-    else {
-        flags->L=false;
-        flags->P=false;
     }
     return 0;
 }
