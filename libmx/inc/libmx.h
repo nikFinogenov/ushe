@@ -23,6 +23,7 @@ typedef struct s_list {
     struct s_list *next;
 } t_list;
 
+void mx_remove_symbol(char *str, char symbol);
 int mx_str_contains(const char *str, char target_letter);
 char* mx_replace_sub_string(char* original, const char* substring, const char* replacement);
 int mx_get_length(char **arr);

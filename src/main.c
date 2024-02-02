@@ -4,7 +4,7 @@
 int main(void) {
     init();
     while(1) {
-        if(isatty(0)) mx_printstr("u$h> ");
+        if(isatty(0)) printf("%s", "u$h> ");
         char* line = NULL;
         size_t length = 0;
 
