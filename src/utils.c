@@ -113,6 +113,7 @@ int init_cd_flags(t_cd_flags_s *flags, char* str_flags){
                 break;
             case 's':
                 flags->s = true;
+                flags->P = false;
                 break;
             default:
                 mx_printerr("ush: cd: -");

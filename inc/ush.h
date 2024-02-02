@@ -11,10 +11,10 @@
 #include "../libmx/inc/libmx.h"
 #include <string.h>
 #include <pwd.h>
+#include <sys/stat.h>
 
 // #include <dirent.h>
 // #include <time.h>
-// #include <sys/stat.h>
 // #include <sys/types.h>
 // #include <sys/xattr.h>
 // #include <sys/acl.h>
@@ -36,7 +36,7 @@ typedef struct t_env_flags_s{
 } t_env_flags_s; 
 
 typedef struct t_cd_flags_s{
-    bool s; //xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|
+    bool s; //DONE xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|xyi ego znaet|
     bool P; //DONE use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'
     bool L; //DONE taze ebateka chto s pwd
 } t_cd_flags_s; 

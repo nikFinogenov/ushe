@@ -5,11 +5,16 @@ void pwd(char* command) {
     char* str_flags = parse_flags(command, &res);
     t_pwd_flags_s flags;
     int status = init_pwd_flags(&flags, str_flags);
-    if(status == 0) {
-        if(flags.P) {
-            printf("%s\n", getcwd(NULL, 1024));
+    mx_strcpy(command, res);
+    if(mx_get_length(mx_strsplit(command, ' ')) == 1) {
+        if(status == 0) {
+            if(flags.P) {
+                printf("%s\n", getcwd(NULL, 1024));
+            }
+            else printf("%s\n", PWD);
         }
-        else printf("%s\n", PWD);
-        mx_strcpy(command, res);
+    }
+    else {
+        mx_printerr("ush: pwd: too many arguments\n");
     }
 }
