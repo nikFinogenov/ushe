@@ -13,7 +13,7 @@ int main(void) {
             exit(1);
         }
         line[strcspn(line, "\n")] = '\0';
-        char** commands = mx_strsplit(line, ';');
+        char** commands = mx_strsplit(line, ';');        
         mx_strdel(&line);
         for (int i = 0; commands[i] != NULL; ++i) {
             mx_strcpy(commands[i], mx_strtrim(command_format(commands[i])));
@@ -25,7 +25,9 @@ int main(void) {
             commands[i] = destinationBuffer;
 
             char* command = mx_strsplit(commands[i], ' ')[0];
-            if (strcmp(command, "pwd") == 0) pwd(commands[i]);
+            if (operation_parametr_dollar_anal_variable_equals_peremenaya_detect_cum(command)) return 1;//create_var("hui=chlen");
+            else if (only_dollar(command)) output_var(command);
+            else if (strcmp(command, "pwd") == 0) pwd(commands[i]);
             else if (check_buildin(command)) system(commands[i]);
             else if (strcmp(command, "export") == 0) export(commands[i]);
             else if (strcmp(command, "unset") == 0) unset(commands[i]);

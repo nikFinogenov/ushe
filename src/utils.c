@@ -7,12 +7,18 @@ extern char* PREVPWD;
 char *buildin_list[19] = {"env", "export", "unset", "echo", "jobs", "fg", "bg",
                         "cd", "pwd", "which", "exit", "set", "kill", "chdir",
                         "true", "alias", "declare", "false", NULL};
+char** VARS;
+
+void init_env_vars() {
+    VARS = environ;
+}
 
 void init(void) {
     HOME = getpwuid(getuid())->pw_dir;
     PWD = getcwd(NULL, 1024);
     PREVPWD = getcwd(NULL, 1024);
     PATH = getenv("PATH");
+    init_env_vars();
 }
 
 char* replace_tilda(char* argument, int *flag) {
@@ -149,4 +155,64 @@ bool check_buildin(char* command) {
         }
     }
     return true;
+}
+
+bool operation_parametr_dollar_anal_variable_equals_peremenaya_detect_cum(char* line_command) {
+    for (int i = 0; line_command[i] != '\0'; ++i) {
+        if (line_command[i] == '=' && i > 0 && line_command[i+1] != '\0') {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool only_dollar(char* line_command) {
+    if (line_command[0] == '\0') {
+        return false;
+    }
+
+    if (line_command[0] == '$' && line_command[1] != ' ' && line_command[1] != '\t' && line_command[1] != '\n' && line_command[1] != '\0') {
+        return true;
+    }
+
+    return false;
+}
+
+// void create_var(char* line_command) {
+
+// }
+
+char* find_var_value(const char* var_name) {
+    while (*VARS != NULL) {
+        char* current_var = *VARS;
+        char* equals_sign = strchr(current_var, '=');
+        if (equals_sign != NULL) {
+            if (strncmp(current_var, var_name, equals_sign - current_var) == 0) {
+                return equals_sign + 1;
+            }
+        }
+        VARS++;
+    }
+    return NULL;
+}
+
+void remove_dollar_sign(char* input_string) {
+    char* source = input_string;
+    char* destination = input_string;
+
+    while (*source) {
+        if (*source != '$') {
+            *destination = *source;
+            destination++;
+        }
+        source++;
+    }
+
+    *destination = '\0';
+}
+
+void output_var(char* var_name) {
+    remove_dollar_sign(var_name);
+    char* var_value = find_var_value(var_name);
+    printf("%s\n", var_value);
 }
