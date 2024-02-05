@@ -13,6 +13,11 @@ void init(void) {
     PWD = getcwd(NULL, 1024);
     PREVPWD = getcwd(NULL, 1024);
     PATH = getenv("PATH");
+    int shlvl = mx_atoi(getenv("SHLVL"));
+    setenv("SHLVL", mx_itoa(shlvl + 1), 1);
+    char *shell = mx_strjoin(PWD, "/");
+    shell = mx_strjoin(shell, "ush");
+    setenv("SHELL", shell, 1);
 }
 
 char* replace_tilda(char* argument, int *flag) {

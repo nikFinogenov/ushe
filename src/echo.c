@@ -57,6 +57,7 @@ void echo(char* line) {
     mx_strcpy(line, res);
     count_quotes(line);
     printf("%s\n",&line[5]);
+    // printf("%s\n",line);
 
     // if(count_quotes(&line[5]) % 2 == 0) {
     //     mx_remove_symbol(line, '\"');
