@@ -166,6 +166,31 @@ void init_echo_flags(t_echo_flags_s *flags, char* str_flags){
     flags->E = mx_str_contains(str_flags, 'E') ? true : false;
     flags->e = mx_str_contains(str_flags, 'e') ? true : false;
     flags->n = mx_str_contains(str_flags, 'n') ? true : false;
+    // flags->E=false;
+    // flags->e=false;
+    // flags->n=false;
+    // if(str_flags != NULL) {
+    //     for(int i = 0; i < mx_strlen(str_flags); i++){
+    //         switch (str_flags[i])
+    //         {
+    //         case 'E':
+    //             flags->E = true;
+    //             break;
+    //         case 'e':
+    //             flags->e = true;
+    //             break;
+    //         case 'n':
+    //             flags->n = true;
+    //             break;
+    //         default:
+    //             mx_printerr("ush: echo: -");
+    //             mx_printerr(&str_flags[i]);
+    //             mx_printerr(": invalid option\ncd: usage: cd [-s] [-L|-P] [dir]\n");
+    //             return 1;
+    //         }
+    //     }
+    // }
+    // return 0;
 }
 
 bool check_buildin(char* command) {
