@@ -208,9 +208,42 @@ bool only_dollar(char* line_command) {
     return false;
 }
 
-// void create_var(char* line_command) {
+void create_var(char* line_command) {
+    int env_count = 0;
+    while (environ[env_count] != NULL) {
+        env_count++;
+    }
 
-// }
+    char** new_vars = malloc((env_count + 2) * sizeof(char*));
+    if (new_vars == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < env_count; i++) {
+        new_vars[i] = strdup(environ[i]);
+        if (new_vars[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(new_vars[j]);
+            }
+            free(new_vars);
+            return;
+        }
+    }
+
+    new_vars[env_count] = strdup(line_command);
+    if (new_vars[env_count] == NULL) {
+        for (int j = 0; j < env_count; j++) {
+            free(new_vars[j]);
+        }
+        free(new_vars);
+        return;
+    }
+
+    new_vars[env_count + 1] = NULL;
+
+    VARS = new_vars;
+}
+
 
 // void print_vars_collection(void) {
 //     char** current_var = VARS;
@@ -256,5 +289,5 @@ void remove_dollar_sign(char* input_string) {
 void output_var(char* var_name) {
     remove_dollar_sign(var_name);
     char* var_value = find_var_value(var_name);
-    printf("%s\n", var_value);
+    system(var_value);
 }

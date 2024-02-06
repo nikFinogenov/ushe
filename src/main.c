@@ -25,7 +25,7 @@ int main(void) {
             commands[i] = destinationBuffer;
 
             char* command = mx_strsplit(commands[i], ' ')[0];
-            if (operation_parametr_dollar_anal_variable_equals_peremenaya_detect_cum(command)) return 1;//create_var("hui=chlen");
+            if (operation_parametr_dollar_anal_variable_equals_peremenaya_detect_cum(command)) create_var(command);
             else if (only_dollar(command)) output_var(command);
             else if (strcmp(command, "pwd") == 0) pwd(commands[i]);
             else if (check_buildin(command)) system(commands[i]);

@@ -83,7 +83,7 @@ int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags);
 bool check_buildin(char* command);
 bool operation_parametr_dollar_anal_variable_equals_peremenaya_detect_cum(char* line_command);
 bool only_dollar(char* line_command);
-// void create_var(char*** vars, char* line_command);
+void create_var(char* line_command);
 void output_var(char* var_name);
 
 char* HOME;
