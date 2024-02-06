@@ -182,19 +182,31 @@ bool only_dollar(char* line_command) {
 
 // }
 
+// void print_vars_collection(void) {
+//     char** current_var = VARS;
+
+//     printf("Переменные среды:\n");
+//     while (*current_var != NULL) {
+//         printf("%s\n", *current_var);
+//         current_var++;
+//     }
+// }
+
 char* find_var_value(const char* var_name) {
-    while (*VARS != NULL) {
-        char* current_var = *VARS;
+    char** local_vars = VARS;
+    while (*local_vars != NULL) {
+        char* current_var = *local_vars;
         char* equals_sign = strchr(current_var, '=');
         if (equals_sign != NULL) {
             if (strncmp(current_var, var_name, equals_sign - current_var) == 0) {
                 return equals_sign + 1;
             }
         }
-        VARS++;
+        local_vars++;
     }
     return NULL;
 }
+
 
 void remove_dollar_sign(char* input_string) {
     char* source = input_string;
