@@ -18,6 +18,7 @@ void init(void) {
     char *shell = mx_strjoin(PWD, "/");
     shell = mx_strjoin(shell, "ush");
     setenv("SHELL", shell, 1);
+    // TMP_X_Y = NULL;
 }
 
 char* replace_tilda(char* argument, int *flag) {
@@ -205,4 +206,24 @@ bool check_buildin(char* command) {
         }
     }
     return true;
+}
+
+char *find_in_path(char *cmd, char **path) {
+    char **dirs = mx_strsplit(*path, ':');
+    char *path_cmd = NULL;
+
+    for (int i = 0; dirs[i] != NULL; i++) {
+        path_cmd = malloc((strlen(dirs[i]) + strlen(cmd) + 2) * sizeof(char));
+        sprintf(path_cmd, "%s/%s", dirs[i], cmd);
+
+        if (access(path_cmd, X_OK) == 0) {
+            free(dirs);
+            return path_cmd;
+        }
+
+        free(path_cmd);
+    }
+
+    free(dirs);
+    return NULL;
 }

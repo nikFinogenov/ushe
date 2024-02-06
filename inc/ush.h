@@ -12,6 +12,8 @@
 #include <string.h>
 #include <pwd.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <stdlib.h>
 
 // #include <dirent.h>
 // #include <time.h>
@@ -81,10 +83,13 @@ void init_which_flags(t_which_flags_s *flags, char* str_flags);
 void init_echo_flags(t_echo_flags_s *flags, char* str_flags);
 int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags);
 bool check_buildin(char* command);
+char *find_in_path(char *cmd, char **path);
+
 
 char* HOME;
 char* PWD;
 char* PREVPWD;
 char* PATH;
+// char* TMP_X_Y;
 
 #endif

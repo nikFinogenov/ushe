@@ -37,20 +37,12 @@ static bool is_dir(const char *path) {
     }
     return false;
 }
+
 static bool is_path_exists(const char *path) {
-    if (access(path, F_OK) == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    if (access(path, F_OK) == 0) return true;
+    return false;
 }
-// static bool is_link(const char *path) {
-//     struct stat st;
-//     if (lstat(path, &st) == 0) {
-//         return S_ISLNK(st.st_mode);
-//     }
-//     return false;
-// }
+
 void cd(char* command) {
     char* res = NULL;
     char* str_flags = parse_flags(command, &res);
@@ -86,7 +78,6 @@ void cd(char* command) {
             }
             else if(chdir(PWD) == 0) {
                 if(flags.P) {
-                    printf("blya\n");
                     PWD = getcwd(NULL, 1024);
                 }
                 PREVPWD = tmppwd;
