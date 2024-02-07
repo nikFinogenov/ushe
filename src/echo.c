@@ -1,75 +1,7 @@
-// #include "ush.h"
+#include "ush.h"
 
-// static int count_quotes(char* line) {
-//     int count = 0;
-//     for(int i = 0; i < mx_strlen(line); i++) {
-//         if (line[i] == '\'' || line[i] == '\"') {
-//             if (line[i - 1] != '\\') count++;
-//         }
-//     }
-//     return count;
-// }
-// static void remove_quotes(char* input) {
-//     size_t input_length = strlen(input);
-//     size_t output_index = 0;
-//     int inside_quote = 0;
 
-//     for (size_t i = 0; i <= input_length; i++) {
-//         if (input[i] == '\'' || input[i] == '"') {
-//             if (i > 0 && input[i - 1] == '\\') {
-//                 input[output_index++] = input[i];
-//             } else {
-//                 inside_quote = !inside_quote;
-//             }
-//         } else if (!inside_quote) {
-//             input[output_index++] = input[i];
-//         }
-//     }
-
-//     input[output_index] = '\0';
-// }
-
-// void echo(char* line) {
-//     char* res = NULL;
-//     char* str_flags = parse_flags(line, &res);
-//     t_echo_flags_s flags;
-//     init_echo_flags(&flags, str_flags);
-//     mx_strcpy(line, res);
-//     // count_quotes(line);
-//     printf("%s\n",&line[5]);
-//     // printf("%s\n",line);
-//     // printf()
-//     if(count_quotes(&line[5]) % 2 == 0) {
-//         remove_quotes(line);
-//         line = replace_escape_seq(line);
-//         printf("%s", &line[5]);
-
-//         if(!flags.n) {
-//             printf("\n");
-//         }
-//     } else {
-//         mx_printerr("pidoras normalno skobochki postav\n");
-//     }
-// }
-#include "../inc/ush.h"
-char *mx_delete_extra_spaces(const char *str) {
-    if (!str)
-        return NULL;
-    char *s = mx_strnew(mx_strlen(str));
-	char *rez;
-    if (s)
-        for (int k = 0; *str; s[k++] = *(str++))
-            if (mx_isspace(*str)){
-                for (s[k++] = ' '; mx_isspace(*str); ++str);
-                if (!(*str))
-                    break;
-            }
-    rez = mx_strtrim(s);
-    free(s);
-    return rez;
-}
-
-static void apply_escapes(char **str) {
+static void spec_symbols(char **str) {
     char *ptr = mx_strchr(*str, '"');
     if (ptr != NULL) {
         char *slash_ptr = mx_strchr(ptr, '\\');
@@ -169,10 +101,9 @@ static void apply_escapes(char **str) {
     }
 }
 
-static void del_extra_spaces(char **str) {
-    if (strchr(*str, '"') || strchr(*str, '\''))
-        return;
-    *str = mx_delete_extra_spaces(*str);
+static void extra_spaces(char **str) {
+    if (strchr(*str, '"') || strchr(*str, '\'')) return;
+    *str = mx_del_extra_spaces(*str);
 }
 
 
@@ -182,10 +113,10 @@ int echo(char *line) {
     t_echo_flags_s flags;
     init_echo_flags(&flags, str_flags);
     mx_strcpy(line, res);
-    del_extra_spaces(&line);
+    extra_spaces(&line);
 
     *line = *mx_strtrim(line);
-    apply_escapes(&line);
+    spec_symbols(&line);
 
     char **data = mx_strsplit(line, '>');
     char *ptr = data[0];
@@ -231,7 +162,7 @@ int echo(char *line) {
         str = mx_strnew(4096);
         if(data[1] != NULL) {
             FILE *file;
-            char *path = mx_strdup(getenv("PWD"));
+            char *path = mx_strdup(PWD);
             char *newpath = mx_strcat(path, "/");
             newpath = mx_strcat(newpath, data[1]);
             file = fopen(newpath, "w");                
@@ -267,7 +198,7 @@ int echo(char *line) {
             }
         }
         else {
-            mx_printerr("Odd number of quotes.\n");
+            mx_printerr("Norm kol-vo quotes postav\n");
             mx_del_strarr(&data);
             return 1;
         }
@@ -278,7 +209,7 @@ int echo(char *line) {
         str = mx_strnew(4096);
         if(data[1] != NULL) {
             FILE *file;
-            char *path = mx_strdup(getenv("PWD"));
+            char *path = mx_strdup(PWD);
             char *newpath = mx_strcat(path, "/");
             newpath = mx_strcat(newpath, data[1]);
             file = fopen(newpath, "w");                
@@ -287,9 +218,8 @@ int echo(char *line) {
             free(path);
             isWrite = false;
         }
-        else {
-            mx_strcat(str, ptr);
-        }
+        else mx_strcat(str, ptr);
+
         int count = 0;
         bool parants = false;
         for (int i = 0; str[i]; i++) {
@@ -302,9 +232,7 @@ int echo(char *line) {
             }
             else if (str[i] == '\\') {
                 if (!parants) {
-                    for (int j = i; str[j]; j++) {
-                        str[j] = str[j+1];
-                    }
+                    for (int j = i; str[j]; j++) str[j] = str[j+1];
                 }
             }
         }
@@ -315,7 +243,7 @@ int echo(char *line) {
             }
         }
         else {
-            mx_printerr("Odd number of quotes.\n");
+            mx_printerr("Norm kol-vo quotes postav\n");
             mx_del_strarr(&data);
             return 1;
         }
@@ -326,7 +254,7 @@ int echo(char *line) {
         str = mx_strnew(4096);
         if(data[1] != NULL) {
             FILE *file;
-            char *path = mx_strdup(getenv("PWD"));
+            char *path = mx_strdup(PWD);
             char *newpath = mx_strcat(path, "/");
             newpath = mx_strcat(newpath, data[1]);
             file = fopen(newpath, "w");                
@@ -335,9 +263,7 @@ int echo(char *line) {
             free(path);
             isWrite = false;
         }
-        else {
-            mx_strcat(str, ptr);
-        }
+        else mx_strcat(str, ptr);
         int count = 0;
         bool parants = false;
         for (int i = 0; str[i]; i++) {
@@ -363,17 +289,12 @@ int echo(char *line) {
             }
         }
         else {
-            mx_printerr("Odd number of quotes.\n");
+            mx_printerr("Norm kol-vo quotes postav\n");
             mx_del_strarr(&data);
             return 1;
         }
     }
-    /*
-    else 
-        mx_printchar('\n');
-    */
 
     mx_del_strarr(&data);
     return 0;
 }
-
