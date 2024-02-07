@@ -84,7 +84,7 @@ void init_echo_flags(t_echo_flags_s *flags, char* str_flags);
 int init_pwd_flags(t_pwd_flags_s *flags, char* str_flags);
 bool check_buildin(char* command);
 char *find_in_path(char *cmd, char **path);
-
+char* replace_escape_seq(const char* input);
 
 char* HOME;
 char* PWD;

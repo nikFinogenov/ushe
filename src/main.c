@@ -34,7 +34,8 @@ int main(void) {
             size_t secondStringLength = strlen(repl);
             char* destinationBuffer = (char*)malloc(secondStringLength + 1);
             mx_strcpy(destinationBuffer, repl);
-            commands[i] = destinationBuffer;
+            // commands[i] = destinationBuffer;
+            commands[i] = replace_escape_seq(destinationBuffer);
 
             char* command = mx_strsplit(commands[i], ' ')[0];
             if (strcmp(command, "pwd") == 0) pwd(commands[i]);

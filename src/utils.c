@@ -24,7 +24,7 @@ void init(void) {
 char* replace_tilda(char* argument, int *flag) {
     int tildeIndex = mx_get_char_index(argument, '~');
     
-    if (tildeIndex != -1) {
+    if (tildeIndex != -1 && argument[tildeIndex - 1] != '\\') {
         if (argument[tildeIndex + 1] == '+'){
             *flag = 1;
             return mx_replace_sub_string(argument, "~+", PWD);
@@ -38,22 +38,16 @@ char* replace_tilda(char* argument, int *flag) {
             return mx_replace_sub_string(argument, "~", HOME);
         }
         else{
-
-        const char* usernameEnd = strchr(argument, '/');
-
-        size_t usernameLength = (usernameEnd != NULL) ? (size_t)(usernameEnd - argument - tildeIndex - 1) : strlen(argument);
-
-        char* username = (char*)malloc(usernameLength + 1);
-
-        strncpy(username, argument + tildeIndex + 1, usernameLength);
-        username[usernameLength] = '\0';
-
+            const char* usernameEnd = strchr(argument, '/');
+            size_t usernameLength = (usernameEnd != NULL) ? (size_t)(usernameEnd - argument - tildeIndex - 1) : strlen(argument);
+            char* username = (char*)malloc(usernameLength + 1);
+            strncpy(username, argument + tildeIndex + 1, usernameLength);
+            username[usernameLength] = '\0';
             struct passwd *user_info = getpwnam(username);
             if (user_info != NULL) {
                 char* path = mx_strjoin("~", username);
                 return mx_replace_sub_string(argument, path, user_info->pw_dir);
             }
-            
             return argument;
         }
     }
@@ -226,4 +220,29 @@ char *find_in_path(char *cmd, char **path) {
 
     free(dirs);
     return NULL;
+}
+
+char* replace_escape_seq(const char* input) {
+    size_t input_length = strlen(input);
+    char* output = (char*)malloc(input_length + 1);
+
+    if (output == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    size_t output_index = 0;
+    int escaped = 0;
+
+    for (size_t i = 0; i < input_length; i++) {
+        if (escaped) {
+            output[output_index++] = input[i];
+            escaped = 0;
+        } else if (input[i] == '\\') escaped = 1;
+        else output[output_index++] = input[i];
+    }
+
+    output[output_index] = '\0';
+
+    return output;
 }
