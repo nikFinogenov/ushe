@@ -44,7 +44,7 @@ int main(void) {
             else if (strcmp(command, "which") == 0) which(commands[i]); 
             else if (strcmp(command, "env") == 0) env(commands[i]);          
             else if (strcmp(command, "cd") == 0) cd(commands[i]);
-            else if (strcmp(command, "echo") == 0) echo(commands[i]);
+            else if (strcmp(command, "echo") == 0) echo(destinationBuffer);
             else if (strcmp(command, "exit") == 0) my_exit();
             else {
                 int sts = run_unknown(commands[i]);

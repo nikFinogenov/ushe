@@ -66,7 +66,7 @@ void pwd(char* command);
 void init(void);
 void cd(char* path);
 char* command_format(char* command);
-void echo(char* line);
+int echo(char* line);
 void my_exit(void);
 int export(char* arguments);
 int unset(char* arguments);
